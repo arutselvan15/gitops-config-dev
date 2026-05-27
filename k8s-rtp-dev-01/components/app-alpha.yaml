@@ -1,0 +1,13 @@
+name: app-alpha
+
+src:
+  repo: https://github.com/arutselvan15/gitops-app-alpha.git
+  rev: main
+
+manifests:
+  - src: helm/webapp
+    name: app-alpha
+    kind: helm
+    namespace: hello-world
+    values:
+      replicaCount: 5

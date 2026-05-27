@@ -1,0 +1,28 @@
+name: app-beta
+
+src:
+  repo: https://github.com/arutselvan15/gitops-app-beta.git
+  rev: main
+
+manifests:
+  - src: helm/webapp
+    name: app-beta
+    kind: helm
+    namespace: hello-world
+    values:
+      replicaCount: 5
+  - src: kustomize/overlays
+    name: app-beta
+    kind: kustomizej2
+    values:
+      namespace: hello-world
+  - src: kustomizej2/overlays
+    name: app-beta
+    kind: kustomizej2
+    values:
+      namespace: hello-world
+      lifecycle: dev
+      replicas: 3
+      emojis:
+        - "😀"
+        - "🚀"

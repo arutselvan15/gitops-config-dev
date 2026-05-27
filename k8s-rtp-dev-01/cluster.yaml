@@ -1,0 +1,11 @@
+---
+cluster: k8s-rtp-dev-01
+lifecycle: dev
+location: rtp
+cluster_api_url: https://api.k8s-rtp-dev-01.cisco.com:6443
+
+# required destination git repo
+dest:
+  repo: https://github.com/arutselvan15/gitops-manifests.git
+  rev: dev
+  base_dir: deployments/k8s-rtp-dev-01
