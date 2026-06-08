@@ -9,3 +9,4 @@ dest:
   repo: https://github.com/arutselvan15/gitops-manifests.git
   rev: dev
   base_dir: deployments/k8s-alln-dev-01
+  gitops_config_dir: argocd-applications/k8s-alln-dev-01
