@@ -2,3 +2,7 @@
 .idea
 .env
 output
+kustomize
+kustomizej2
+helm
+gitops

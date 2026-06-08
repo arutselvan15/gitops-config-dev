@@ -4,6 +4,10 @@ src:
   repo: https://github.com/arutselvan15/gitops-app-beta.git
   rev: main
 
+application:
+  src: gitops/argoapplication.yaml.j2
+  kind: argoapplication
+
 manifests:
   - src: helm/webapp
     name: app-beta

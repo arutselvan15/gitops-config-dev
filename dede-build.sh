@@ -1,9 +1,13 @@
 #!/bin/bash
 
 usage() {
-    echo "Usage: $0 <cluster> <component-name>"
-    echo "Example: $0 dexter-rtp-dev-01 app-alpha.yaml"
-    exit 1
+  echo "Usage: $0 <cluster> <component-name>"
+  echo "Example: $0 dexter-rtp-dev-01 app-alpha.yaml"
+  exit 1
+}
+
+clean(){
+  rm -rf kustomizej2 helm kustomize gitops
 }
 
 if [ "$#" -ne 2 ]; then
@@ -27,16 +31,19 @@ echo "Starting dede release for component: ${comp_file}"
 if [ ! -f "$comp_file" ]; then
     echo "Error: Component file $comp_file does not exist."
     echo "Please ensure the component name is correct and the file exists."
+    clean
     exit 1
 fi
 
 if [ ! -d "${template}" ]; then
     echo "Error: Directory ${template} does not exist."
     echo "Please clone the template project repository."
+    clean
     exit 1
 fi
 
-rm -rf kustomizej2 helm kustomize gitops output/*
+clean
+rm -rf output/*
 
 # check if directory exists before copying
 if [ -d "${template}/kustomizej2" ]; then
@@ -59,8 +66,15 @@ fi
 # Run dede with CWD explicitly set to repo root (required for kustomizej2 path check)
 if ! (cd "$SCRIPT_DIR" && dede -vvv release manifests "$output_dir" "$cluster_file" "$comp_file"); then
     echo "*** dede release failed ***"
+    clean
     exit 1
 fi
-echo "*** dede release completed. Output available in output/ ***"
+# Run dede with CWD explicitly set to repo root (required for kustomizej2 path check)
+if ! (cd "$SCRIPT_DIR" && dede -vvv release application "$output_dir" "$cluster_file" "$comp_file"); then
+    echo "*** dede release failed ***"
+    clean
+    exit 1
+fi
 
-rm -rf kustomizej2 helm kustomize gitops
+echo "*** dede release completed. Output available in output/ ***"
+clean
